@@ -471,9 +471,9 @@ használatával::
 
    class Taska:
        def __init__(self):
-           self.tartalom = []
+           self.adat = []
        def belerak(self, x):
-           self.tartalom.append(x)
+           self.adat.append(x)
        def belerak_ketszer(self, x):
            self.belerak(x)
            self.belerak(x)
@@ -503,40 +503,41 @@ használatának. A származtatott osztályok definíciója a következőképpen 
        .
        <utasitas-N>
 
-a :class:`SzuloOsztalyNeve` névnek a származtatott osztály névterében léteznie
-kell. Abban az esetben, ha a szülőosztály másik modulban lett definiálva, a
-modulnev.szuloosztalynev formát is használhatjuk::
+A :class:`SzuloOsztalyNeve` névnek abban a névtérben kell lennie, ahol a
+származtatott osztályt definiáljuk. A szülőosztály neve helyett más
+tetszőleges kifejezés is megengedett.  Ez akkor hasznos, ha az
+szülőosztály definíciója másik osztályban van::
 
    class SzarmaztatottOsztalyNeve(modulnev.SzuloOsztalyNeve):
 
-A származtatott osztály definíciójának feldolgozása hasonló a szülőosztályokéhoz
---- az osztályobjektum létrehozásakor a szülőosztály is a példány része lesz. Ha
-egy osztályjellemzőre hivatkozunk, és az nincs jelen az osztályban, az
-értelmező a szülőosztályban keresi azt --- és ha az szintén származtatott
-osztály, akkor annak a  szülőjében folytatódik a keresés, rekurzívan.
+A származtatott osztály definíciójának feldolgozása hasonló a szülőosztályokéhoz.
+Az osztályobjektum a létrehozásakor megjegyzi a szülőosztályt. Ezt
+használjuk arra, hogy feloldjuk a jellemzőkre történő hivatkozásokat: ha
+a keresett jellemző nincs jelen az osztályban, a keresés a
+szülőosztályban folytatódik. Ez a szabályt alkalmazza a Python
+rekurzívan, hogyha a szülőosztály maga is származtatott osztálya egy
+másik osztálynak.
 
 A származtatott osztályok példányosításában nincs semmi különleges:
-``SzarmaztatottOsztalyNeve()`` létrehozza az osztály új példányát. A metódusok
-nyilvántartását a következőképp oldja meg az értelmező: először az aktuális
-osztály megfelelő nevű osztály-objektumait vizsgálja meg, majd ha nem találja a
-keresett metódust, elindul a szülőosztályok láncán. Ha a keresési folyamat
-eredményes, tehát valamelyik szülőosztályban megtalálta a keresett nevű
-objektumot, az adott objektumnév hivatkozása érvényes lesz: a talált objektumra
-mutat.
+``SzarmaztatottOsztalyNeve()`` létrehozza az osztály új példányát. A
+metódus-hivatkozások feloldása a következőképpen történik:
+a megfelelő osztály jellemzőjét keresi meg, ha szükséges
+végigkutatva a szülőosztályok láncát, és ha a talált jellemző egy
+függvény, akkor a metódus-hivatkozás érvényes.
 
-A származtatott osztályok felülírhatják a szülőosztályok metódusait.  A
-metódusoknak nincsenek különleges jogaik más, ugyanabban az objektumban lévő
-metódusok hívásakor. A szülőosztály egy metódusa ``/a_eredeti()/``, amely
-ugyanazon szülőosztály egy másik metódusát hívja ``/b()``, lehet hogy nem fog
-működni, ha a származtatott osztályból felülírják ``/a_uj()/, ami nem hívja már
-b()-t``. (C++ programozóknak: a Pythonban minden metódus valójában
-:keyword:`virtuális` típusú.
+A származtatott osztályok felülírhatják a szülőosztályok metódusait.
+Mivel a metódusoknak nincsenek különleges előjogaik, amikor ugyanannak
+az objektumnak más metódusát hívják, ezért a szülőosztályban definiált
+egyik metódus, amely egy szintén a szülőosztályban definiált másik
+metódust hívná eredetileg, lehet, hogy a származtatott osztály által
+felülírt metódust fogja meghívni.  (C++ programozóknak: a Pythonban
+lényegében minden metódus :keyword:`virtuális`.)
 
 A származtatott osztály metódusa, amely felülírja a szülőosztály egy metódusát,
 valójában inkább kiterjeszti az eredeti metódust, és nem egyszerűen csak
 kicseréli. A szülőosztály metódusára így hivatkozhatunk:
 ``SzuloOsztalyNev.metodusnev(self, argumentumok)``. Ez néha jól jöhet.  (Fontos,
-hogy ez csak akkor működik, ha a szülőosztáy a globális névtérben lett
+hogy ez csak akkor működik, ha a szülőosztály a globális névtérben lett
 létrehozva, vagy közvetlenül beimportálva.)
 
 .. _tut-multiple:
@@ -544,19 +545,16 @@ létrehozva, vagy közvetlenül beimportálva.)
 Többszörös öröklés
 ------------------
 
-A python korlátozottan támogatja a többszörös öröklést is. Egy ilyen osztály
-definíciója a következőképp néz ki::
+A Python támogatja a többszörös öröklést egy formáját is. Egy több
+szülőosztályból származtatott osztály definíciója a következőképp néz
+ki::
 
-   % class DerivedClassName(Base1, Base2, Base3):
-   %     <statement-1>
    class SzarmaztatottOsztalyNeve(Szulo1, Szulo2, Szulo3):
-         <utasitas-1>
-
+       <utasitas-1>
        .
        .
        .
-   %     <statement-N>
-         <utasitas-N>
+       <utasitas-N>
 
 Az egyedüli nyelvtani szabály amit ismerni kell, az osztályjellemzők
 feloldásának a szabálya. Az értelmező először a mélyebb rétegekben keres, balról
@@ -565,7 +563,7 @@ jobbra. A fenti példában ha a jellemző nem található meg  a
 keresi  azt, majd rekurzívan a :class:`Szulo2`-ben, és ha ott nem találja,
 akkor lép tovább rekurzívan a többi szülőosztály felé.
 
-Néhányan első pillanatban arra gondolnak, hogy a :class:`Szulo2` -ben és a
+Néhányan első pillanatban arra gondolnak, hogy a :class:`Szulo2`-ben és a
 :class:`Szulo3`-ban kellene előbb keresni, a :class:`Szulo1` előtt ---
 mondván hogy ez természetesebb lenne. Ez az elgondolás viszont igényli  annak
 ismeretét, hogy mely jellemzőt  definiáltak a :class:`Szulo1`-ben vagy annak
@@ -577,8 +575,8 @@ Ezekből gondolom már látszik, hogy az átgondolatlanul használt többszörö
 öröklődés a program karbantartását rémálommá teheti -- a névütközések
 elkerülése végett pedig a Python csak a konvenciókra támaszkodhat.  A többszörös
 öröklés egyik jól ismert problémája ha a gyermekosztály két szülőosztályának egy
-közös nagyszülő osztálya van. Ugyan egyszerű kitalálni  hogy mi történik ebben
-az esetben (a nagyszülő adat jellemzőinek egypéldányos  változatát használja
+közös nagyszülő osztálya van. Ugyan egyszerű kitalálni hogy mi történik ebben
+az esetben (a nagyszülő adat jellemzőinek egypéldányos változatát használja
 a gyermek) -- az még nem tisztázott, hogy ez a nyelvi kifejezésmód minden
 esetben használható-e.
 
