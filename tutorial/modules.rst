@@ -259,9 +259,9 @@ Standard modulok
 
 A Python funkciójuk szerint csoportokba sorolt szabványos modulokkal rendelkezik
 --  egy könyvtárral -- részletesen: `Python Library Reference -- Python
-referenciakönyvtár a későbbiekben <http://docs.python.org/lib/lib.html>`_ `A
+referenciakönyvtár a későbbiekben <https://docs.python.org/3/library/>`_ `A
 modulok tételes felsorolása -- Module index
-<http://docs.python.org/modindex.html>`_  Néhány modult az értelmezőbe
+<https://docs.python.org/3/py-modindex.html>`_  Néhány modult az értelmezőbe
 építettünk be, ezeken keresztül olyan funkciók megvalósítása lehetséges, amelyek
 ugyan nem tartoznak szorosan a nyelvhez,  de például az operációs rendszerrel
 való kapcsolathoz szükségesek -- ilyenek például a rendszerhívások.

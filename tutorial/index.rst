@@ -136,19 +136,19 @@ Szótár
 +-----------------------------+-------------------------------------+
 | default                     | alapértelmezett                     |
 +-----------------------------+-------------------------------------+
-| scope                       | hatáskör, hatókör, érvényességi kör |
+| scope                       | hatáskör, hatókör                   |
 +-----------------------------+-------------------------------------+
 | keyword argument            | kulcsszavas argumentum              |
 +-----------------------------+-------------------------------------+
-| right-hand side expression  | ???                                 |
+| right-hand side expression  | jobboldali kifejezés                |
 +-----------------------------+-------------------------------------+
 | sequence unpacking          | a sorozat szétpakolása              |
 +-----------------------------+-------------------------------------+
 | shortcut operators          | ???                                 |
 +-----------------------------+-------------------------------------+
-| slice notation              | szelet jelölési mód???              |
+| slice notation              | szelet jelölési mód                 |
 +-----------------------------+-------------------------------------+
-| List Comprehensions         |    listaértelmezés                  |
+| List Comprehensions         | listaértelmezés                     |
 +-----------------------------+-------------------------------------+
 | Library reference           | Referencia könyvtár                 |
 +-----------------------------+-------------------------------------+
